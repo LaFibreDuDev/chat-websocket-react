@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fenêtre de Chat</title>
+    <!-- DaisyUI et Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="min-h-screen bg-base-200 flex items-center justify-center p-4">
+    <div class="card w-full bg-base-100 shadow-xl">
+        <div class="card-body p-0">
+            <!-- En-tête -->
+            <div class="bg-primary text-primary-content p-4 rounded-t-box">
+                <h2 class="card-title">Chat en direct</h2>
+            </div>
+            
+            <!-- Zone de chat -->
+            <div class="flex flex-col h-[80vh]">
+                <!-- Messages -->
+                <div class="flex-grow overflow-y-auto p-4 space-y-4" id="messageContainer">
+                    <!-- Les messages apparaîtront ici -->
+                    <div class="chat chat-start">
+                        <div class="chat-header">
+                            Utilisateur
+                            <time class="text-xs opacity-50">12:00</time>
+                        </div>
+                        <div class="chat-bubble">Bienvenue dans le chat !</div>
+                    </div>
+                    <div class="chat chat-end">
+                        <div class="chat-header">
+                            Utilisateur2
+                            <time class="text-xs opacity-50">12:01</time>
+                        </div>
+                        <div class="chat-bubble">Comment ça va ?</div>
+                    </div>
+                </div>
+                
+                <!-- Zone de saisie -->
+                <div class="p-4 bg-base-200 rounded-b-box">
+                    <div class="flex gap-2 mb-2">
+                        <input type="text" id="username" placeholder="Votre nom" class="input input-bordered input-sm w-full" />
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="messageInput" placeholder="Tapez votre message..." class="input input-bordered w-full" />
+                        <button class="btn btn-primary" onclick="sendMessage()">Envoyer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getCurrentTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+        
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const usernameInput = document.getElementById('username');
+            const messageContainer = document.getElementById('messageContainer');
+            
+            const message = messageInput.value.trim();
+            const username = usernameInput.value.trim() || 'Anonyme';
+            
+            if (message) {
+                const time = getCurrentTime();
+                
+                const messageElement = document.createElement('div');
+                messageElement.className = 'chat chat-end';
+                messageElement.innerHTML = `
+                    <div class="chat-header">
+                        ${username}
+                        <time class="text-xs opacity-50">${time}</time>
+                    </div>
+                    <div class="chat-bubble chat-bubble-primary">${message}</div>
+                `;
+                
+                messageContainer.appendChild(messageElement);
+                messageInput.value = '';
+                
+                // Scroll to bottom
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+        }
+        
+        // Permettre d'envoyer avec la touche Entrée
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
