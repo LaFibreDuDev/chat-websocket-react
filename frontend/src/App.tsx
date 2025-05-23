@@ -2,16 +2,16 @@ import {useEffect, useState} from 'react'
 import './App.css'
 import io from 'socket.io-client'
 import type { FormEvent } from "react";
+import {Message, User} from "./types";
+import Chat from "./components/Chat";
+import ChatUsers from "./components/ChatUsers.tsx";
 
 const socket = io('http://localhost:3000')
 
-interface Message {
-  message: string,
-  sender: string,
-  time: string
-}
-
 function App() {
+
+  const [user, setUser] = useState<null | User>(null)
+  const [users, setUsers] = useState<User[]>([])
 
   const [message, setMessage] = useState('')
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([])
@@ -21,17 +21,31 @@ function App() {
       console.log(`Mon identifiant est ${socket.id}`)
     })
 
+    socket.on('users_connected', (connectedUsers: User[]) => {
+      setUsers(connectedUsers)
+    })
+
     socket.on('receive_message', (message: Message) => {
       setReceivedMessages((prevReceivedMessages) => [...prevReceivedMessages, message])
     })
 
     return () => {
       socket.off('receive_message')
+      socket.off('users_connected')
       socket.off('connect')
+      socket.disconnect()
     }
   }, [])
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleUsernameSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const username = formData.get('username') as string
+    setUser({id: socket.id!, username})
+    setUsers((prevUsers) => [...prevUsers, {id: socket.id!, username}])
+    socket.emit('set_username', username)
+  }
+  const handleMessageSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log(`envoi du message : ${message}`)
     socket.emit('send_message', message)
@@ -39,40 +53,34 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-base-200 flex items-center justify-center p-4">
-      <div className="card w-full bg-base-100 shadow-xl">
-        <div className="card-body p-0">
-          <div className="bg-primary text-primary-content p-4 rounded-t-box">
-            <h2 className="card-title">Chat en direct</h2>
-          </div>
-          <div className="flex flex-col h-[80vh]">
-            <div className="flex-grow overflow-y-auto p-4 space-y-4" id="messageContainer">
-              {receivedMessages.map((message, index) => (
-                <div key={index} className="chat chat-start">
-                  <div className="chat-header">
-                    Inconnu
-                    <time className="text-xs opacity-50">{message.time}</time>
-                  </div>
-                  <div className="chat-bubble">{message.message}</div>
-                </div>
-              ))}
-            </div>
-            <div className="p-4 bg-base-200 rounded-b-box">
-              <form className="flex gap-2" onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  id="messageInput"
-                  placeholder="Tapez votre message..."
-                  className="input input-bordered w-full"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-                <button className="btn btn-primary">Envoyer</button>
-              </form>
+    <div className="h-screen bg-base-200 p-4">
+      {user === null ? (
+        <form className=" h-full flex justify-center items-center gap-2" onSubmit={handleUsernameSubmit}>
+          <div className="card bg-base-100 w-96 shadow-sm">
+            <div className="card-body items-center text-center">
+              <input
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Tapez votre pseudo..."
+                className="input input-bordered w-full"
+              />
+              <button className="btn btn-primary">Envoyer</button>
             </div>
           </div>
+        </form>
+        ): (
+        <div className="grid grid-cols-[1fr_200px] h-full gap-4">
+          <Chat
+            receivedMessages={receivedMessages}
+            handleMessageSubmit={handleMessageSubmit}
+            message={message}
+            user={user}
+            setMessage={setMessage}
+          />
+          <ChatUsers users={users} />
         </div>
-      </div>
+      )}
     </div>
   )
 }
