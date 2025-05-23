@@ -22,6 +22,7 @@ const io = new Server(server, {
 interface User {
     id: string
     username: string,
+    isWriting: boolean
 }
 interface Message {
     message: string,
@@ -38,15 +39,31 @@ const findUserById = (id: string) => {
 io.on("connection", (socket) => {
     appDebug("Un utilisateur est connecté sur le serveur");
 
-    socket.on("set_username", (username) => {
+    socket.on("set_username", (username: string) => {
         appDebug(`L'utilisateur ${username} est connecté`)
-        const newUser = { id: socket.id, username }
+        const newUser = { id: socket.id, username, isWriting: false }
         users.push(newUser)
         users.sort((a, b) => a.username.localeCompare(b.username))
         io.emit("users_connected", users)
     })
 
-    socket.on("send_message", (message) => {
+    socket.on("is_writing_message", () => {
+        const user = findUserById(socket.id)
+        if (user) {
+            user.isWriting = true
+        }
+        socket.broadcast.emit("users_connected", users)
+    })
+
+    socket.on("stopped_writing_message", () => {
+        const user = findUserById(socket.id)
+        if (user) {
+            user.isWriting = false
+        }
+        socket.broadcast.emit("users_connected", users)
+    })
+
+    socket.on("send_message", (message: string) => {
         appDebug(`Un message est reçu : ${message}`)
         appDebug(`L'utilisateur est ${socket.id}`)
         const user = findUserById(socket.id)

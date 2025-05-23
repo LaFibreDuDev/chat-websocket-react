@@ -1,12 +1,15 @@
-import {useEffect, useState} from 'react'
+import {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react'
 import './App.css'
 import io from 'socket.io-client'
 import type { FormEvent } from "react";
 import {Message, User} from "./types";
 import Chat from "./components/Chat";
 import ChatUsers from "./components/ChatUsers.tsx";
+import {debounce} from "lodash";
 
 const socket = io('http://localhost:3000')
+const emitStoppedWriting = debounce(() => { socket.emit('stopped_writing_message') }, 4000)
+const emitIsWriting = debounce(() => { socket.emit('is_writing_message') }, 500)
 
 function App() {
 
@@ -15,6 +18,8 @@ function App() {
 
   const [message, setMessage] = useState('')
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([])
+
+  const usersAreWriting = users.filter(currentUser => currentUser.isWriting && user?.id !== currentUser.id)
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -37,17 +42,30 @@ function App() {
     }
   }, [])
 
+  const onMessageWriting = (e: ChangeEvent<HTMLInputElement>) => {
+    const message = e.target.value
+    setMessage(message)
+    emitIsWriting()
+  }
+
+  const onKeyUpMessage = (e: KeyboardEvent<HTMLInputElement>)=> {
+    e.preventDefault()
+    emitStoppedWriting()
+  }
+
   const handleUsernameSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     const username = formData.get('username') as string
-    setUser({id: socket.id!, username})
-    setUsers((prevUsers) => [...prevUsers, {id: socket.id!, username}])
+    const user: User = {id: socket.id!, username, isWriting: false}
+    setUser(user)
+    setUsers((prevUsers) => [...prevUsers, user])
     socket.emit('set_username', username)
   }
   const handleMessageSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log(`envoi du message : ${message}`)
+    socket.emit('stopped_writing_message')
     socket.emit('send_message', message)
     setMessage('')
   }
@@ -76,7 +94,9 @@ function App() {
             handleMessageSubmit={handleMessageSubmit}
             message={message}
             user={user}
-            setMessage={setMessage}
+            usersAreWriting={usersAreWriting}
+            onMessageWriting={onMessageWriting}
+            onKeyUpMessage={onKeyUpMessage}
           />
           <ChatUsers users={users} />
         </div>
