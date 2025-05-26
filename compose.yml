@@ -4,10 +4,10 @@ services:
       context: ./frontend
     environment:
       VITE_SOCKET_URI: ${VITE_SOCKET_URI}
-    volumes:
-      - ./frontend:/app
+    ports:
+      - '5173:5173'
   backend:
     build:
       context: ./backend
-    volumes:
-      - ./backend:/app
+    ports:
+      - '3000:3000'
