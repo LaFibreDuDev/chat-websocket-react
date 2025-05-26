@@ -5,11 +5,12 @@ import type { FormEvent } from "react";
 import {Message, User} from "./types";
 import Chat from "./components/Chat";
 import ChatUsers from "./components/ChatUsers.tsx";
-import {debounce} from "lodash";
+import {debounce, throttle} from "lodash";
 
-const socket = io('http://localhost:3000')
-const emitStoppedWriting = debounce(() => { socket.emit('stopped_writing_message') }, 4000)
-const emitIsWriting = debounce(() => { socket.emit('is_writing_message') }, 500)
+const socketUri = import.meta.env.VITE_SOCKET_URI || 'http://localhost:3000';
+const socket = io(socketUri)
+const emitStoppedWriting = debounce(() => { socket.emit('stopped_writing_message') }, 2000)
+const emitIsWriting = throttle(() => { socket.emit('is_writing_message') }, 500)
 
 function App() {
 
@@ -18,6 +19,59 @@ function App() {
 
   const [message, setMessage] = useState('')
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([])
+
+  /*useEffect(() => {
+
+    // define username
+    const username = 'Bob'
+    const user: User = {id: socket.id!, username, isWriting: false}
+    setUser(user)
+
+    // define 20 users
+    const users: User[] = [
+      {id: '1', username: 'Bob', isWriting: true},
+      {id: '2', username: 'Alice', isWriting: false},
+      {id: '3', username: 'Charlie', isWriting: false},
+      {id: '4', username: 'Dave', isWriting: false},
+      {id: '5', username: 'Eve', isWriting: false},
+      {id: '6', username: 'Frank', isWriting: false},
+      {id: '7', username: 'George', isWriting: false},
+      {id: '8', username: 'Harry', isWriting: false},
+      {id: '9', username: 'Ivan', isWriting: false},
+      {id: '10', username: 'Jane', isWriting: false},
+      {id: '15', username: 'Eve', isWriting: false},
+      {id: '16', username: 'Frank', isWriting: false},
+      {id: '17', username: 'George', isWriting: false},
+      {id: '18', username: 'Harry', isWriting: false},
+      {id: '19', username: 'Ivan', isWriting: false},
+      {id: '20', username: 'Jane', isWriting: false},
+      {id: '15', username: 'Eve', isWriting: false},
+      {id: '16', username: 'Frank', isWriting: false},
+      {id: '17', username: 'George', isWriting: false},
+      {id: '18', username: 'Harry', isWriting: false},
+      {id: '19', username: 'Ivan', isWriting: false},
+      {id: '20', username: 'Jane', isWriting: false},
+    ]
+    setUsers(users)
+
+    // define 10 messages
+    const randomMessage: Message = {
+      message: 'Salut !',
+      sender: {id: '1', username: 'Bob', isWriting: false},
+      time: new Date().toLocaleTimeString()
+    }
+    // generate 10 messages
+    const messages: Message[] = []
+    for (let i = 0; i < 10; i++) {
+      messages.push(randomMessage)
+    }
+    messages.push({
+      message: 'Comment ça va ce soir le chat ?',
+      sender: {id: socket.id!, username: 'LaFibre', isWriting: false},
+      time: new Date().toLocaleTimeString()
+    })
+    setReceivedMessages(messages)
+  }, [])*/
 
   const usersAreWriting = users.filter(currentUser => currentUser.isWriting && user?.id !== currentUser.id)
 
@@ -71,7 +125,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen bg-base-200 p-4">
+    <div className="h-screen overflow-hidden">
       {user === null ? (
         <form className=" h-full flex justify-center items-center gap-2" onSubmit={handleUsernameSubmit}>
           <div className="card bg-base-100 w-96 shadow-sm">
@@ -88,7 +142,7 @@ function App() {
           </div>
         </form>
         ): (
-        <div className="grid grid-cols-[1fr_200px] h-full gap-4">
+        <div className="flex h-full">
           <Chat
             receivedMessages={receivedMessages}
             handleMessageSubmit={handleMessageSubmit}
@@ -98,7 +152,7 @@ function App() {
             onMessageWriting={onMessageWriting}
             onKeyUpMessage={onKeyUpMessage}
           />
-          <ChatUsers users={users} />
+          <ChatUsers users={users}/>
         </div>
       )}
     </div>

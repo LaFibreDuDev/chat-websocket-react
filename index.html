@@ -3,97 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fenêtre de Chat</title>
-    <!-- DaisyUI et Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Chat Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-base-200 flex items-center justify-center p-4">
-    <div class="card w-full bg-base-100 shadow-xl">
-        <div class="card-body p-0">
-            <!-- En-tête -->
-            <div class="bg-primary text-primary-content p-4 rounded-t-box">
-                <h2 class="card-title">Chat en direct</h2>
-            </div>
-            
-            <!-- Zone de chat -->
-            <div class="flex flex-col h-[80vh]">
-                <!-- Messages -->
-                <div class="flex-grow overflow-y-auto p-4 space-y-4" id="messageContainer">
-                    <!-- Les messages apparaîtront ici -->
-                    <div class="chat chat-start">
-                        <div class="chat-header">
-                            Utilisateur
-                            <time class="text-xs opacity-50">12:00</time>
-                        </div>
-                        <div class="chat-bubble">Bienvenue dans le chat !</div>
-                    </div>
-                    <div class="chat chat-end">
-                        <div class="chat-header">
-                            Utilisateur2
-                            <time class="text-xs opacity-50">12:01</time>
-                        </div>
-                        <div class="chat-bubble">Comment ça va ?</div>
-                    </div>
+<body class="h-screen overflow-hidden">
+<div class="flex h-full">
+    <!-- Zone de chat principale -->
+    <div class="flex-1 flex flex-col bg-base-200">
+        <!-- Header du chat -->
+        <div class="bg-primary text-primary-content p-4">
+            <h1 class="text-xl font-bold">Chat en direct</h1>
+        </div>
+
+        <!-- Messages du chat -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-3">
+            <!-- Message de Bob -->
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:54:37</time>
                 </div>
-                
-                <!-- Zone de saisie -->
-                <div class="p-4 bg-base-200 rounded-b-box">
-                    <div class="flex gap-2 mb-2">
-                        <input type="text" id="username" placeholder="Votre nom" class="input input-bordered input-sm w-full" />
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" id="messageInput" placeholder="Tapez votre message..." class="input input-bordered w-full" />
-                        <button class="btn btn-primary" onclick="sendMessage()">Envoyer</button>
+                <div class="chat-bubble bg-base-300 text-base-content">Salut !</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:54:37</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Salut !</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:54:37</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Salut !</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:54:37</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Salut !</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:54:37</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Salut !</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:54:37</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Salut !</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:54:37</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Salut !</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:54:37</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Salut !</div>
+            </div>
+
+            <!-- Messages supplémentaires pour tester le scroll -->
+            <div class="chat chat-end">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Moi</span>
+                    <time class="text-xs opacity-50 ml-2">15:55:12</time>
+                </div>
+                <div class="chat-bubble chat-bubble-primary">Salut Bob ! Comment ça va ?</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:55:30</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Ça va bien merci ! Et toi ?</div>
+            </div>
+
+            <div class="chat chat-end">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Moi</span>
+                    <time class="text-xs opacity-50 ml-2">15:55:45</time>
+                </div>
+                <div class="chat-bubble chat-bubble-primary">Très bien aussi ! Tu travailles sur quoi en ce moment ?</div>
+            </div>
+
+            <div class="chat chat-start">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">15:56:02</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Je développe une nouvelle application web avec React et Node.js. C'est passionnant !</div>
+            </div>
+
+            <!-- Indicateur "en train d'écrire" -->
+            <div class="chat chat-start" id="typing-indicator" style="display: none;">
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <span class="text-xs opacity-50 ml-2">est en train d'écrire...</span>
+                </div>
+                <div class="chat-bubble bg-base-200 text-base-content opacity-70">
+                    <div class="flex items-center gap-1">
+                        <div class="loading loading-dots loading-sm"></div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Zone de saisie -->
+        <div class="p-4 bg-base-100 border-t border-base-300 relative">
+            <!-- Toast "en train d'écrire" -->
+            <div class="toast toast-start mb-16" id="typing-toast" style="display: none;">
+                <div class="alert alert-info">
+                    <div class="flex items-center gap-2">
+                        <div class="loading loading-spinner loading-sm"></div>
+                        <span>Bob est en train d'écrire...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <input type="text" placeholder="Tapez votre message..." class="input input-bordered flex-1" />
+                <button class="btn btn-primary">Envoyer</button>
+            </div>
+        </div>
     </div>
 
-    <script>
-        function getCurrentTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            return `${hours}:${minutes}`;
-        }
-        
-        function sendMessage() {
-            const messageInput = document.getElementById('messageInput');
-            const usernameInput = document.getElementById('username');
-            const messageContainer = document.getElementById('messageContainer');
-            
-            const message = messageInput.value.trim();
-            const username = usernameInput.value.trim() || 'Anonyme';
-            
-            if (message) {
-                const time = getCurrentTime();
-                
-                const messageElement = document.createElement('div');
-                messageElement.className = 'chat chat-end';
-                messageElement.innerHTML = `
+    <!-- Sidebar des utilisateurs -->
+    <div class="w-80 bg-secondary text-secondary-content flex flex-col">
+        <!-- Header utilisateurs -->
+        <div class="p-4 bg-secondary-focus">
+            <h2 class="text-lg font-bold">Utilisateurs</h2>
+        </div>
+
+        <!-- Liste des utilisateurs -->
+        <div class="flex-1 overflow-y-auto p-2">
+            <div class="space-y-2">
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                            <span class="text-sm font-bold">B</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Bob</div>
+                        <div class="text-sm opacity-70 flex items-center gap-1">
+                            <span>En train d'écrire</span>
+                            <div class="loading loading-dots loading-sm"></div>
+                        </div>
+                    </div>
+                    <div class="badge badge-info badge-sm"></div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-accent text-accent-content flex items-center justify-center">
+                            <span class="text-sm font-bold">A</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Alice</div>
+                        <div class="text-sm opacity-70">En ligne</div>
+                    </div>
+                    <div class="badge badge-success badge-sm"></div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-warning text-warning-content flex items-center justify-center">
+                            <span class="text-sm font-bold">C</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Charlie</div>
+                        <div class="text-sm opacity-70">Absent</div>
+                    </div>
+                    <div class="badge badge-warning badge-sm"></div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-error text-error-content flex items-center justify-center">
+                            <span class="text-sm font-bold">D</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Diana</div>
+                        <div class="text-sm opacity-70">Hors ligne</div>
+                    </div>
+                    <div class="badge badge-error badge-sm"></div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-info text-info-content flex items-center justify-center">
+                            <span class="text-sm font-bold">E</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Ethan</div>
+                        <div class="text-sm opacity-70">En ligne</div>
+                    </div>
+                    <div class="badge badge-success badge-sm"></div>
+                </div>
+
+                <!-- Utilisateurs supplémentaires pour tester le scroll -->
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                            <span class="text-sm font-bold">F</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Frank</div>
+                        <div class="text-sm opacity-70">En ligne</div>
+                    </div>
+                    <div class="badge badge-success badge-sm"></div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-accent text-accent-content flex items-center justify-center">
+                            <span class="text-sm font-bold">G</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Grace</div>
+                        <div class="text-sm opacity-70">Absent</div>
+                    </div>
+                    <div class="badge badge-warning badge-sm"></div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-warning text-warning-content flex items-center justify-center">
+                            <span class="text-sm font-bold">H</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Henry</div>
+                        <div class="text-sm opacity-70">En ligne</div>
+                    </div>
+                    <div class="badge badge-success badge-sm"></div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-error text-error-content flex items-center justify-center">
+                            <span class="text-sm font-bold">I</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Iris</div>
+                        <div class="text-sm opacity-70">Hors ligne</div>
+                    </div>
+                    <div class="badge badge-error badge-sm"></div>
+                </div>
+
+                <div class="flex items-center gap-3 p-3 hover:bg-secondary-focus rounded-lg cursor-pointer transition-colors">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full bg-info text-info-content flex items-center justify-center">
+                            <span class="text-sm font-bold">J</span>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="font-medium">Jack</div>
+                        <div class="text-sm opacity-70">En ligne</div>
+                    </div>
+                    <div class="badge badge-success badge-sm"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-scroll vers le bas lors du chargement
+    const chatMessages = document.querySelector('.flex-1.overflow-y-auto.p-4');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Simulation d'envoi de message
+    const input = document.querySelector('input[type="text"]');
+    const sendButton = document.querySelector('.btn-primary');
+
+    function sendMessage() {
+        const message = input.value.trim();
+        if (message) {
+            const chatContainer = document.querySelector('.space-y-3');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat chat-end';
+            messageDiv.innerHTML = `
                     <div class="chat-header">
-                        ${username}
-                        <time class="text-xs opacity-50">${time}</time>
+                        <span class="text-sm opacity-70">Moi</span>
+                        <time class="text-xs opacity-50 ml-2">${new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit', second: '2-digit'})}</time>
                     </div>
                     <div class="chat-bubble chat-bubble-primary">${message}</div>
                 `;
-                
-                messageContainer.appendChild(messageElement);
-                messageInput.value = '';
-                
-                // Scroll to bottom
-                messageContainer.scrollTop = messageContainer.scrollHeight;
-            }
+            chatContainer.appendChild(messageDiv);
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
-        
-        // Permettre d'envoyer avec la touche Entrée
-        document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-    </script>
+    }
+
+    sendButton.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Fonctions pour gérer les indicateurs "en train d'écrire"
+    function showTypingIndicator() {
+        // Afficher l'indicateur dans le chat
+        const typingIndicator = document.getElementById('typing-indicator');
+        if (typingIndicator) {
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Afficher le toast
+        const typingToast = document.getElementById('typing-toast');
+        if (typingToast) {
+            typingToast.style.display = 'block';
+        }
+    }
+
+    function hideTypingIndicator() {
+        // Masquer l'indicateur dans le chat
+        const typingIndicator = document.getElementById('typing-indicator');
+        if (typingIndicator) {
+            typingIndicator.style.display = 'none';
+        }
+
+        // Masquer le toast
+        const typingToast = document.getElementById('typing-toast');
+        if (typingToast) {
+            typingToast.style.display = 'none';
+        }
+    }
+
+    // Démonstration des indicateurs
+    // Afficher l'indicateur après 3 secondes
+    setTimeout(showTypingIndicator, 3000);
+
+    // Masquer l'indicateur après 8 secondes et ajouter un message
+    setTimeout(() => {
+        hideTypingIndicator();
+        const chatContainer = document.querySelector('.space-y-3');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'chat chat-start';
+        messageDiv.innerHTML = `
+                <div class="chat-header">
+                    <span class="text-sm opacity-70">Bob</span>
+                    <time class="text-xs opacity-50 ml-2">${new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit', second: '2-digit'})}</time>
+                </div>
+                <div class="chat-bubble bg-base-300 text-base-content">Merci pour cette conversation intéressante !</div>
+            `;
+        chatContainer.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 8000);
+</script>
 </body>
 </html>

@@ -12,6 +12,6 @@ export default function ChatMessage({user, message}: ChatMessageProps) {
       {message.sender.username}
       <time className="text-xs opacity-50">{message.time}</time>
     </div>
-    <div className="chat-bubble">{message.message}</div>
+    <div className={clsx("chat-bubble", user.id === message.sender.id ? "chat-bubble-primary" : "chat-bubble-neutral")}>{message.message}</div>
   </div>
 }
